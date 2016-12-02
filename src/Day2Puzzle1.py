@@ -28,9 +28,13 @@ for single_line_of_instruction in instructions.split(", "):
     for character in single_line_of_instruction:
         operation_axis = operation_lookup[character]['move']
         operation_magnitude = operation_lookup[character]['by']
-        new_result_for_coordinate_axis = keypad_coordinates[str(operation_axis)]+operation_magnitude
-        if -2 < new_result_for_coordinate_axis < 2:
-            keypad_coordinates[str(operation_axis)] = new_result_for_coordinate_axis
+
+        original_state_of_coordinates = keypad_coordinates.copy()  # take a copy of our current coordinates
+        keypad_coordinates[str(operation_axis)] = keypad_coordinates[str(operation_axis)]+operation_magnitude  # perform the move
+
+        # check if the move put us outside the available buttons
+        if not (keypad_coordinates['x'],keypad_coordinates['y']) in number_lookup:
+            keypad_coordinates = original_state_of_coordinates.copy()  #if it did, undo our move
 
     # print keypad_coordinates
     code += str(number_lookup[(keypad_coordinates['x'], keypad_coordinates['y'])])
