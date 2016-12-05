@@ -1066,12 +1066,29 @@ fydelmwp-mfyyj-hzcvdsza-769[anbml]
 rwcnawjcrxwju-ljwmh-bqryyrwp-277[nxatm]"""
 
 real_room_sector_sum = 0
+letter_rotation_lookup = {'a': 1, 'b': 2, 'c': 3, 'd': 4, 'e': 5, 'f': 6, 'g': 7, 'h': 8, 'i': 9, 'j': 10, 'k': 11, 'l': 12, 'm': 13, 'n': 14, 'o': 15, 'p': 16, 'q': 17, 'r': 18, 's': 19, 't': 20, 'u': 21, 'v': 22, 'w': 23, 'x': 24, 'y': 25, 'z': 26}
+letter_lookup = ['-', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+decoded_rooms = []
+
+
+def rotate_letter(letter, rotation):
+    current_letter_index = letter_rotation_lookup[letter]
+    change_within_alphabet = rotation % 26
+    if current_letter_index+change_within_alphabet > 26:
+        new_index = current_letter_index+change_within_alphabet-26
+    else:
+        new_index = current_letter_index+change_within_alphabet
+
+    return letter_lookup[new_index]
+
 
 for single_room in instructions.split("\n"):
     pieces = single_room.split('-')  # get all the pieces of the input separated by dashes (Sector / checksum together)
-    room_name = ''.join(pieces[:len(pieces)-1])  # grab the room name and put it all in one string
+    room_name_with_dashes = pieces[:len(pieces)-1]
+    room_name_with_spaces = ' '.join(pieces[:len(pieces)-1])
+    room_name = ''.join(room_name_with_dashes)  # grab the room name and put it all in one string
     sector_id_and_checksum = pieces[len(pieces)-1].split('[')  # get the piece that is the sector and checksum
-    sector_id = sector_id_and_checksum[0]  # get the sector id out of the first part
+    sector_id = int(sector_id_and_checksum[0])  # get the sector id out of the first part
     checksum = sector_id_and_checksum[1].split(']')[0]  # get the checksum and remove the extra closing brace
 
     temp_common_letters = {}
@@ -1082,18 +1099,24 @@ for single_room in instructions.split("\n"):
         else:
             temp_common_letters[character] = 1
 
-    sorted_common_letters = sorted(temp_common_letters.items(), key= lambda x:x[1], reverse=True)
+    sorted_common_letters = sorted(temp_common_letters.items(), key=lambda x: x[1], reverse=True)
 
     temp_counter = 0
     built_checksum = ""
     for common_letter in sorted_common_letters:
-
         if temp_counter < 5:
             built_checksum += common_letter[0]
 
         temp_counter += 1
 
     if built_checksum == checksum:
-        real_room_sector_sum += int(sector_id)
+        real_room_sector_sum += sector_id
 
-print real_room_sector_sum
+        decoded_name = ""
+        for character in room_name_with_spaces:
+            if character != ' ':
+                decoded_name += rotate_letter(character, sector_id)
+
+        decoded_rooms.append({'room_name': decoded_name, 'sector_id': sector_id})
+
+print decoded_rooms
