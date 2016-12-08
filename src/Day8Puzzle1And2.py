@@ -152,7 +152,7 @@ rotate column x=2 by 5
 rotate column x=1 by 3
 rotate column x=0 by 4"""
 
-screen = [[0 for columns in range(50)] for rows in range(6)]
+screen = [[" " for columns in range(50)] for rows in range(6)]
 # screen[row][col]
 
 
@@ -175,7 +175,7 @@ def rect(col, row):
     while col >= 0:
         temp_row = row
         while temp_row >= 0:
-            screen[temp_row][col] = 1
+            screen[temp_row][col] = "#"
             temp_row -= 1
         col -= 1
 
