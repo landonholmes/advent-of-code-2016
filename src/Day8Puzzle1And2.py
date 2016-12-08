@@ -183,7 +183,7 @@ def rect(col, row):
 def rotate_col(which_col, magnitude):
     while magnitude > 0:
         current_col = len(screen)-1  # start at bottom of height
-        original_ending = screen[len(screen)-1][which_col];
+        original_ending = screen[len(screen)-1][which_col]
         while current_col > 0:
             screen[current_col][which_col] = screen[current_col-1][which_col]
             current_col -= 1
@@ -194,7 +194,7 @@ def rotate_col(which_col, magnitude):
 def rotate_row(which_row, magnitude):
     while magnitude > 0:
         current_col = len(screen[0])-1  # start at right of width
-        original_ending = screen[which_row][len(screen[0])-1];
+        original_ending = screen[which_row][len(screen[0])-1]
         while current_col > 0:
             screen[which_row][current_col] = screen[which_row][current_col-1]
             current_col -= 1
