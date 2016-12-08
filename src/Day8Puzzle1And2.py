@@ -209,14 +209,12 @@ for line in instructions.split("\n"):
         if "rotate column" in line:
             (column, amount) = line.split("rotate column x=")[1].split(" by ")
             rotate_col(int((column, amount)[0]), int((column, amount)[1]))
-
         else:
             (row, amount) = line.split("rotate row y=")[1].split(" by ")
             rotate_row(int((row, amount)[0]), int((row, amount)[1]))
 
-
 display_screen()
-print sum(row.count(1) for row in screen)
+print sum(row.count("#") for row in screen)
 
 # This is puzzle 1 and 2 because puzzle 2 is just reading the display.
 # This way, my display_screen for debugging was used to see the letters
