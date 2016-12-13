@@ -21,15 +21,24 @@ dec d
 jnz d -2
 dec c
 jnz c -5"""
+
+# part 1 input
+# registers = {
+#     'a': 0,
+#     'b': 0,
+#     'c': 0,
+#     'd': 0
+# }
+# part 2 input, c starts at 1
 registers = {
     'a': 0,
     'b': 0,
-    'c': 0,
+    'c': 1,
     'd': 0
 }
 instructions_array = instructions.split('\n')
-
-for instruction_index in range(len(instructions_array)):
+instruction_index = 0
+while instruction_index < len(instructions_array):
     instruction_parts = instructions_array[instruction_index].split(" ")
     if instruction_parts[0] == 'cpy':
         try:  # if we can convert it to an int, the instruction is a plain number
@@ -43,13 +52,14 @@ for instruction_index in range(len(instructions_array)):
         except:  # if not, it must be pointing to a register
             number_to_compare = registers[instruction_parts[1]]
 
-        if number_to_compare > 0:
-            instruction_index += int(instruction_parts[2])
+        if number_to_compare != 0:
+            instruction_index += int(instruction_parts[2])-1  # the -1 to offset the already-incrementing index
     elif instruction_parts[0] == 'inc':
         registers[instruction_parts[1]] += 1
     elif instruction_parts[0] == 'dec':
         registers[instruction_parts[1]] -= 1
     else:
         print 'instruction not found'
+    instruction_index += 1
 
-print 'end:', registers
+print 'Ending A Value:', registers['a']
